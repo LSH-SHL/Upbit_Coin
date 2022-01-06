@@ -1,3 +1,4 @@
+import matplotlib matplotlib.use('Agg')
 import datetime
 import time
 import pyupbit
