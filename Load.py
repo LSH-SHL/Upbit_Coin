@@ -28,18 +28,26 @@ Fluctuation_Rate = (Current_Total / Purchase_Total) * 100 - 100
  
 
 print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-print("Hello! Lee! What can I do for you?/n/n/n/n")
+print("Hello! Lee! What can I do for you?\n\n\n\n")
 print("purchase price of all coins : " + str(Purchase_Property) + " Won")
 print("current price of all coins : "+ str(Current_Property) + ' Won')
-print("fluctuation rate : " + str(Fluctuation_Rate) +'%')
-
+print("\n\n\n\n")
+print("fluctuation rate : " + str(round(Fluctuation_Rate)) +'%')
 print("[1] Check Property")
 print("[2] Buy")
 print("[3] Sell")
-
-
 print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-
+Choice = input("Input Your Choice! : ")
+if (Choice == 1):
+  print("\n\nKR-won : " + Contents[0]['balance'])
+  for i in range(1, len(Contents)):
+    df = pyupbit.get_ohlcv("KRW-" + Contents[i]['currency'], interval="minute1", count=1)
+    print("Currency : " + Contents[i]['currency'])
+    print("Purchase Price : " + Contents[i]['balance'])
+    print("Current Price : " + df['open'][0])
+    Fluctuation_Rate_of_Coin = (float(df['open'][0]) / float(Contents[i]['balance'])) * 100 - 100
+    print("fluctuation rate : " + str(Fluctuation_Rate_of_Coin))
+    print("\n\n\n")
 
 
 
