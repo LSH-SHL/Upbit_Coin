@@ -39,15 +39,18 @@ print("[3] Sell")
 print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
 Choice = int(input("Input Your Choice! : "))
 if (Choice == 1):
-  print("\n\nKR-won : " + Contents[0]['balance'])
+  print("\nKR-won : " + Contents[0]['balance'])
   for i in range(1, len(Contents)):
-    df = pyupbit.get_ohlcv("KRW-" + Contents[i]['currency'], interval="minute1", count=1)
+    if (Contents[i]['currency'] != 'CHR'):
+      df = pyupbit.get_ohlcv("BTC-" + Contents[i]['currency'], interval="minute1", count=1)
+    else:
+      df = pyupbit.get_ohlcv("KRW-" + Contents[i]['currency'], interval="minute1", count=1)
     print("Currency : " + Contents[i]['currency'])
     print("Purchase Price : " + Contents[i]['avg_buy_price'])
     print("Current Price : " + str(df['open'][0]))
     Fluctuation_Rate_of_Coin = (float(df['open'][0]) / float(Contents[i]['avg_buy_price'])) * 100 - 100
-    print("fluctuation rate : " + str(Fluctuation_Rate_of_Coin))
-    print("\n\n\n")
+    print("fluctuation rate : " + str(round(Fluctuation_Rate_of_Coin)) +'%')
+    print("\n")
 
 
 
