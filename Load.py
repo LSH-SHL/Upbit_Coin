@@ -24,7 +24,7 @@ for i in range(1,len(Contents)):
 
 Purchase_Property = format(round(Purchase_Total),',')
 Current_Property = format(round(Current_Total),',')
-Fluctuation_Rate = (Current_Property / Purchase_Property) * 100 - 100
+Fluctuation_Rate = (Current_Total / Purchase_Total) * 100 - 100
  
 
 print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
