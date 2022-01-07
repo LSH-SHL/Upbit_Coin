@@ -41,7 +41,7 @@ Choice = int(input("Input Your Choice! : "))
 if (Choice == 1):
   print("\nKR-won : " + Contents[0]['balance'])
   for i in range(1, len(Contents)):
-    if (Contents[i]['currency'] != 'CHR'):
+    if (Contents[i]['currency'] == 'CHR'):
       df = pyupbit.get_ohlcv("BTC-" + Contents[i]['currency'], interval="minute1", count=1)
     else:
       df = pyupbit.get_ohlcv("KRW-" + Contents[i]['currency'], interval="minute1", count=1)
