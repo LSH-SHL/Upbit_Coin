@@ -37,7 +37,7 @@ print("[1] Check Property")
 print("[2] Buy")
 print("[3] Sell")
 print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-Choice = input("Input Your Choice! : ")
+Choice = int(input("Input Your Choice! : "))
 if (Choice == 1):
   print("\n\nKR-won : " + Contents[0]['balance'])
   for i in range(1, len(Contents)):
