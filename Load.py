@@ -70,16 +70,22 @@ def Check_Property():
     return option
 
 
+def get_current_price(ticker):
+    """현재가 조회"""
+    return pyupbit.get_orderbook(ticker=ticker)["orderbook_units"][0]["ask_price"]
+
 
 def Buy_the_Coin():
-  print("BUY")
   Search_Coin = input("Please enter the symbol of the coin :")
-  
+  print('\n' + Search_Coin + "'s Current Price \n")
+  print(get_current_price(Search_Coin) + ' Won')
+
+
 
 def Sell_the_Coin():
-  print("SEll")
   Search_Coin = input("Please enter the symbol of the coin :")
-
+  print('\n' + Search_Coin + "'s Current Price \n")
+  print(get_current_price(Search_Coin) + ' Won')
 
 
 
