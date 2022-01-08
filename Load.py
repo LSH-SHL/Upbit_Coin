@@ -8,6 +8,8 @@ upbit = pyupbit.Upbit(access, secret)
 Contents = upbit.get_balances()
 Purchase_Total = float(Contents[0]['balance'])
 Current_Total = float(Contents[0]['balance'])
+temp = 0
+
 
 for i in range(1,len(Contents)):
   # print(Contents[i]['currency'] +' : ' + Contents[i]['balance'])
@@ -18,9 +20,11 @@ for i in range(1,len(Contents)):
     Current_Total += float(Contents[i]['balance']) * float(df['open'][0])
   else:
     df = pyupbit.get_ohlcv("BTC-" + Contents[i]['currency'], interval="minute1", count=1)
+    df2= pyupbit.get_ohlcv("KRW-BTC",interval-"minute1",count =1)
     print(float(df['open'][0]))
-    Current_Total += float(Contents[i]['balance']) * float(df['open'][0]) 
-
+    
+    Current_Total += float(Contents[i]['balance']) * float(df['open'][0]) * float(df2['open'][0]) 
+    print(float(df['open'][0]) * float(df2['open'][0]))
 
 
 Purchase_Property = format(round(Purchase_Total),',')
