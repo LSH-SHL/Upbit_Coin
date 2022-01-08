@@ -9,6 +9,9 @@ Contents = upbit.get_balances()
 Purchase_Total = float(Contents[0]['balance'])
 Current_Total = float(Contents[0]['balance'])
 temp = 0
+option = 0
+Return_Option = 0
+
 
 
 for i in range(1,len(Contents)):
@@ -32,18 +35,10 @@ Current_Property = format(round(Current_Total),',')
 Fluctuation_Rate = (Current_Total / Purchase_Total) * 100 - 100
  
 
-print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-print("Hello! Lee! What can I do for you?\n\n")
-print("purchase price of all coins : " + str(Purchase_Property) + " Won")
-print("current price of all coins : "+ str(Current_Property) + ' Won')
-print("\n\n")
-print("fluctuation rate : " + str(round(Fluctuation_Rate)) +'%')
-print("[1] Check Property")
-print("[2] Buy")
-print("[3] Sell")
-print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-Choice = int(input("Input Your Choice! : "))
-if (Choice == 1):
+
+
+
+def Check_Property():
   print("\nKR-won : " + Contents[0]['balance'])
   for i in range(1, len(Contents)):
     if (Contents[i]['currency'] == 'CHR'):
@@ -64,7 +59,50 @@ if (Choice == 1):
       print("fluctuation rate : " + str(round(Fluctuation_Rate_of_Coin)) +'%')
     
     print("\n")
+    print("Would you like to do another job? [Y/N]")
+    option = input()
+    if (option == 'N' | 'n'):
+      quit()
+
+    elif(option == 'Y' | 'y'):
+      return option
+
+
+
+def Buy_the_Coin():
+  print("BUY")
+
+def Sell_the_Coin():
+  print("SEll")
 
 
 
 
+
+
+
+
+
+
+
+print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+print("Hello! Lee! What can I do for you?\n\n")
+print("purchase price of all coins : " + str(Purchase_Property) + " Won")
+print("current price of all coins : "+ str(Current_Property) + ' Won')
+print("\n\n")
+print("fluctuation rate : " + str(round(Fluctuation_Rate)) +'%')
+print("[1] Check Property")
+print("[2] Buy")
+print("[3] Sell")
+print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+while(True):
+  Choice = int(input("Input Your Choice! : "))
+  if (Choice == 1):
+    Check_Property()
+  elif (Choice == 2):
+    Buy_the_Coin()
+  elif (Choice == 3):
+    Sell_the_Coin()
+  else:
+    quit()  
+    
