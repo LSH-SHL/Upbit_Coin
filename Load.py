@@ -60,12 +60,12 @@ def Check_Property():
     
     print("\n")
     print("Would you like to do another job? [Y/N]")
-    option = input()
-    if (option == 'N' | 'n'):
-      quit()
+  option = input()
+  if (option == 'N' | option == 'n'):
+    quit()
 
-    elif(option == 'Y' | 'y'):
-      return option
+  elif(option == 'Y' | option == 'y'):
+    return option
 
 
 
@@ -106,3 +106,7 @@ while(True):
   else:
     quit()  
     
+
+
+
+
