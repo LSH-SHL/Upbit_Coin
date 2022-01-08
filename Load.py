@@ -14,7 +14,9 @@ Return_Option = 0
 Search_Coin = 0
 Estimated_amount = 0
 
-
+Property_option = 0
+exchange = 0
+Get_Current_price = 0
 
 for i in range(1,len(Contents)):
   # print(Contents[i]['currency'] +' : ' + Contents[i]['balance'])
@@ -76,16 +78,32 @@ def get_current_price(ticker):
 
 
 def Buy_the_Coin():
+  print('write in capital letters')
   Search_Coin = input("Please enter the symbol of the coin :")
+  Property_option = input("Please enter the symbol of the property :")
   print('\n' + Search_Coin + "'s Current Price \n")
-  print(get_current_price(Search_Coin) + ' Won')
+  Get_Current_price = get_current_price(Property_option + '-' + Search_Coin) 
+  if (Property_option != 'KRW'):
+    df = pyupbit.get_ohlcv("KRW-" + Property_option, interval="minute1", count=1)
+    Get_Current_price *= float(df['open'][0])
+    print(str(Get_Current_price) + ' Won')
+  else:
+    print(get_current_price(Property_option + '-' + Search_Coin) + ' Won')
 
 
 
 def Sell_the_Coin():
+  print('write in capital letters')
   Search_Coin = input("Please enter the symbol of the coin :")
+  Property_option = input("Please enter the symbol of the property :")
   print('\n' + Search_Coin + "'s Current Price \n")
-  print(get_current_price(Search_Coin) + ' Won')
+  Get_Current_price = get_current_price(Property_option + '-' + Search_Coin) 
+  if (Property_option != 'KRW'):
+    df = pyupbit.get_ohlcv("KRW-" + Property_option, interval="minute1", count=1)
+    Get_Current_price *= float(df['open'][0])
+    print(str(Get_Current_price) + ' Won')
+  else:
+    print(get_current_price(Property_option + '-' + Search_Coin) + ' Won')
 
 
 
@@ -117,7 +135,3 @@ while(True):
   else:
     quit()  
     
-
-
-
-
