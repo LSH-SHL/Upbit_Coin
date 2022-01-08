@@ -88,7 +88,7 @@ def Buy_the_Coin():
     Get_Current_price *= float(df['open'][0])
     print(str(Get_Current_price) + ' Won')
   else:
-    print(get_current_price(Property_option + '-' + Search_Coin) + ' Won')
+    print(str(get_current_price(Property_option + '-' + Search_Coin)) + ' Won')
 
 
 
@@ -103,7 +103,7 @@ def Sell_the_Coin():
     Get_Current_price *= float(df['open'][0])
     print(str(Get_Current_price) + ' Won')
   else:
-    print(get_current_price(Property_option + '-' + Search_Coin) + ' Won')
+    print(str(get_current_price(Property_option + '-' + Search_Coin)) + ' Won')
 
 
 
