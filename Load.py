@@ -20,7 +20,7 @@ for i in range(1,len(Contents)):
     Current_Total += float(Contents[i]['balance']) * float(df['open'][0])
   else:
     df = pyupbit.get_ohlcv("BTC-" + Contents[i]['currency'], interval="minute1", count=1)
-    df2= pyupbit.get_ohlcv("KRW-BTC",interval-"minute1",count =1)
+    df2= pyupbit.get_ohlcv("KRW-BTC",interval="minute1",count =1)
     print(float(df['open'][0]))
     
     Current_Total += float(Contents[i]['balance']) * float(df['open'][0]) * float(df2['open'][0]) 
