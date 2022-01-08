@@ -11,6 +11,8 @@ Current_Total = float(Contents[0]['balance'])
 temp = 0
 option = 0
 Return_Option = 0
+Search_Coin = 0
+Estimated_amount = 0
 
 
 
@@ -59,7 +61,7 @@ def Check_Property():
       print("fluctuation rate : " + str(round(Fluctuation_Rate_of_Coin)) +'%')
     
     print("\n")
-    print("Would you like to do another job? [Y/N]")
+  print("Would you like to do another job? [Y/N]")
   option = input()
   if (option == 'N' | option == 'n'):
     quit()
@@ -71,9 +73,12 @@ def Check_Property():
 
 def Buy_the_Coin():
   print("BUY")
+  Search_Coin = input("Please enter the symbol of the coin :")
+  
 
 def Sell_the_Coin():
   print("SEll")
+  Search_Coin = input("Please enter the symbol of the coin :")
 
 
 
