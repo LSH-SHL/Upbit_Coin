@@ -3,20 +3,25 @@ import pyupbit
 
 access = "fUxuI4HySxFEnpNklcUm3KE8raUq7WWxgZScqupF" 
 secret = "fy5TwwHtTA2GhLN46OKXyHfCsRBV8B2dsleHPZrf"
-upbit = pyupbit.Upbit(access, secret)
+upbit = pyupbit.Upbit(access, secret) # 업비트 로그인
 
-Contents = upbit.get_balances()
-Purchase_Total = float(Contents[0]['balance'])
-Current_Total = float(Contents[0]['balance'])
-temp = 0
-option = 0
-Return_Option = 0
+Contents = upbit.get_balances() # 내 자산 불러오기
+Purchase_Total = float(Contents[0]['balance']) # 코인 구매가
+Current_Total = float(Contents[0]['balance'])  # 코인 현재가 
+
+temp = 0  # BTC > KRW
+option = 0  # 다음 작업
+
 Search_Coin = 0
 Estimated_amount = 0
 
 Property_option = 0
 exchange = 0
 Get_Current_price = 0
+
+Number_to_Purchase = 0
+
+
 
 for i in range(1,len(Contents)):
   # print(Contents[i]['currency'] +' : ' + Contents[i]['balance'])
@@ -86,9 +91,10 @@ def Buy_the_Coin():
   if (Property_option != 'KRW'):
     df = pyupbit.get_ohlcv("KRW-" + Property_option, interval="minute1", count=1)
     Get_Current_price *= float(df['open'][0])
-    print(str(Get_Current_price) + ' Won')
-  else:
-    print(str(get_current_price(Property_option + '-' + Search_Coin)) + ' Won')
+  print(str(Get_Current_price) + ' Won\n')
+  Number_to_Purchase = int(input("number to purchase : "))
+  Estimated_amount = Get_Current_price * Number_to_Purchase
+  print("Estimated Price : " + str(Estimated_amount))
 
 
 
@@ -101,10 +107,10 @@ def Sell_the_Coin():
   if (Property_option != 'KRW'):
     df = pyupbit.get_ohlcv("KRW-" + Property_option, interval="minute1", count=1)
     Get_Current_price *= float(df['open'][0])
-    print(str(Get_Current_price) + ' Won')
-  else:
-    print(str(get_current_price(Property_option + '-' + Search_Coin)) + ' Won')
-
+  print(str(Get_Current_price) + ' Won\n')
+  Number_to_Purchase = int(input("number to purchase : "))
+  Estimated_amount = Get_Current_price * Number_to_Purchase
+  print("Estimated Price : " + str(Estimated_amount))
 
 
 
@@ -135,3 +141,5 @@ while(True):
   else:
     quit()  
     
+""" 판매& 구매와 비트코인 오차 발생 수정
+이후 객체화 해서 현재 재화 계속 갱신하"""
