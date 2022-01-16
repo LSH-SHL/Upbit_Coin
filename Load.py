@@ -4,10 +4,11 @@ import pyupbit
 access = "fUxuI4HySxFEnpNklcUm3KE8raUq7WWxgZScqupF" 
 secret = "fy5TwwHtTA2GhLN46OKXyHfCsRBV8B2dsleHPZrf"
 upbit = pyupbit.Upbit(access, secret)             # 업비트 로그인
+Contents = upbit.get_balances()
 
-Contents = upbit.get_balances()                   # 내 자산 불러오기
-Purchase_Total = float(Contents[0]['balance'])    # 코인 구매가
-Current_Total = float(Contents[0]['balance'])     # 코인 현재가 
+Purchase_Property = 0
+Current_Property = 0
+Fluctuation_Rate = 0
 
 temp = 0                                          # BTC > KRW 변환 용 변수
 option = 0                                        # 다음 작업을 할것인지 판단하는 Boolean 대용
@@ -21,24 +22,31 @@ Number_to_Purchase = 0                            # 몇개를 매수 or 매도 �
 
 existence_and_nonexistence = False
 pointer = 0
-# 현재 내 코인의 총 구매 가격과 현재가격을 검색하는 process #
-for i in range(1,len(Contents)):                  # 0번째 칸에는 원화가 있으므로 총 금액을 굳이 검색할 필요가 없음 그래서 1,len()으로 설정  
-  Purchase_Total += float(Contents[i]['balance']) * float(Contents[i]['avg_buy_price']) # 잔고에 있는 코인의 개수 * 코인의 평균 매수 가격을 토탈 가격에 포함
-  if (Contents[i]['currency'] != 'CHR'):  # 만약 코인이 크로미아가 아니라면  # 크로미아는 BTC심볼로만 구매 가능하다.
-    df = pyupbit.get_ohlcv("KRW-" + Contents[i]['currency'], interval="minute1", count=1) # 코인 현재가 검색
-    Current_Total += float(Contents[i]['balance']) * float(df['open'][0])                 # 코인 현재가에 덧셈
-  else:                                   # 만약 코인이 크로미아라면
-    df = pyupbit.get_ohlcv("BTC-" + Contents[i]['currency'], interval="minute1", count=1) # BTC로 코인 현재가를 검색
-    df2= pyupbit.get_ohlcv("KRW-BTC",interval="minute1",count =1)                         # 원화로 변환하기 위해 BTC 가격도 검색
-    print(float(df['open'][0])) # 잔고 출력 
-    
-    Current_Total += float(Contents[i]['balance']) * float(df['open'][0]) * float(df2['open'][0]) # 원화로 변환한 가격을 코인 현재가에 덧셈
-    print(float(df['open'][0]) * float(df2['open'][0])) # 잔고 출력
-#=======================================================#
 
-Purchase_Property = format(round(Purchase_Total),',')           # 3자리 수마다 ,를 찍고 소숫점 아래 전부 버림
-Current_Property = format(round(Current_Total),',')             # 동일
-Fluctuation_Rate = (Current_Total / Purchase_Total) * 100 - 100 # Fluctuation_Rate = 수익률
+ret = 0
+def Property_Load():
+# 현재 내 코인의 총 구매 가격과 현재가격을 검색하는 process #
+  Contents = upbit.get_balances()                   # 내 자산 불러오기
+  Purchase_Total = float(Contents[0]['balance'])    # 코인 구매가
+  Current_Total = float(Contents[0]['balance'])     # 코인 현재가
+
+  for i in range(1,len(Contents)):                  # 0번째 칸에는 원화가 있으므로 총 금액을 굳이 검색할 필요가 없음 그래서 1,len()으로 설정  
+    Purchase_Total += float(Contents[i]['balance']) * float(Contents[i]['avg_buy_price']) # 잔고에 있는 코인의 개수 * 코인의 평균 매수 가격을 토탈 가격에 포함
+    if (Contents[i]['currency'] != 'CHR'):  # 만약 코인이 크로미아가 아니라면  # 크로미아는 BTC심볼로만 구매 가능하다.
+      df = pyupbit.get_ohlcv("KRW-" + Contents[i]['currency'], interval="minute1", count=1) # 코인 현재가 검색
+      Current_Total += float(Contents[i]['balance']) * float(df['open'][0])                 # 코인 현재가에 덧셈
+    else:                                   # 만약 코인이 크로미아라면
+      df = pyupbit.get_ohlcv("BTC-" + Contents[i]['currency'], interval="minute1", count=1) # BTC로 코인 현재가를 검색
+      df2= pyupbit.get_ohlcv("KRW-BTC",interval="minute1",count =1)                         # 원화로 변환하기 위해 BTC 가격도 검색
+      print(float(df['open'][0])) # 잔고 출력 
+      
+      Current_Total += float(Contents[i]['balance']) * float(df['open'][0]) * float(df2['open'][0]) # 원화로 변환한 가격을 코인 현재가에 덧셈
+      print(float(df['open'][0]) * float(df2['open'][0])) # 잔고 출력
+  #=======================================================#
+
+  Purchase_Property = format(round(Purchase_Total),',')           # 3자리 수마다 ,를 찍고 소숫점 아래 전부 버림
+  Current_Property = format(round(Current_Total),',')             # 동일
+  Fluctuation_Rate = (Current_Total / Purchase_Total) * 100 - 100 # Fluctuation_Rate = 수익률
  
 
 # 코인 하나하나의 자산 체크 함수 # 
@@ -90,7 +98,6 @@ def Buy_the_Coin(): # 구매 매커니즘 수정 요함
     df = pyupbit.get_ohlcv("KRW-" + Property_option, interval="minute1", count=1) # 원화로 변환
     Get_Current_price *= float(df['open'][0])
   print(str(Get_Current_price) + ' Won\n')
-
   Number_to_Purchase = int(input("number to purchase : "))
   Estimated_amount = Get_Current_price * Number_to_Purchase
   print("Estimated Price : " + str(Estimated_amount) + " Won")
@@ -99,7 +106,8 @@ def Buy_the_Coin(): # 구매 매커니즘 수정 요함
   option = input()
   if (option == 'Y' or option == 'y'):
     if (Estimated_amount <= float(Contents[0]['balance']) and Estimated_amount > 5000):
-         upbit.buy_market_order(Property_option + "-" + Search_Coin, Estimated_amount)
+        ret = upbit.buy_market_order(Property_option + "-" + Search_Coin, Estimated_amount)
+        print(ret)
     else:
       print("Don't enough money!")
       print("Returns to the initial screen.")
@@ -132,7 +140,8 @@ def Sell_the_Coin():
       for i in range(1, len(Contents)):
         if (Contents[i]['currency'] == Search_Coin):
           if (Number_to_Purchase <= float(Contents[i]['balance'])  and Estimated_amount > 5000): # 자산 불러와야함
-            upbit.sell_market_order(Property_option + "-" + Search_Coin, Number_to_Purchase)
+            ret = upbit.sell_market_order(Property_option + "-" + Search_Coin, Number_to_Purchase)
+            print(ret)
     else:
       print("Don't enough money!")
       print("Returns to the initial screen.\n")
@@ -156,6 +165,7 @@ def Print_Preset():
   
 
 while(True):
+  Property_Load()
   Print_Preset()
   Choice = int(input("Input Your Choice! : "))
   if (Choice == 1):
