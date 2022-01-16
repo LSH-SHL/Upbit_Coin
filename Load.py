@@ -131,7 +131,7 @@ def Sell_the_Coin():
     if (option == 'Y' or option == 'y'):
       for i in range(1, len(Contents)):
         if (Contents[i]['currency'] == Search_Coin):
-          if (Estimated_amount <= Contents[i]['balance']  and Estimated_amount > 5000): # 자산 불러와야함
+          if (Estimated_amount <= float(Contents[i]['balance'])  and Estimated_amount > 5000): # 자산 불러와야함
             upbit.sell_market_order("KRW-" + Property_option, Estimated_amount)
     else:
       print("Don't enough money!")
