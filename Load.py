@@ -52,6 +52,7 @@ def Print_Preset():
   print("[1] Check Property")
   print("[2] Buy")
   print("[3] Sell")
+  print("[4] Get order")
   print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
  
 
@@ -156,7 +157,10 @@ def Sell_the_Coin():
     print("Returns to the initial screen.\n")
 
 
-
+def Get_Order():
+  order = int(input("Input Your Order : "))
+  orderList = upbit.get_order(order)
+  print(orderList)
 
 
 while(True):
@@ -168,5 +172,7 @@ while(True):
     Buy_the_Coin()
   elif (Choice == 3):
     Sell_the_Coin()
+  elif (Choice == 4):
+    Get_Order()
   else:
     quit()  
