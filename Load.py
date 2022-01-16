@@ -158,7 +158,7 @@ def Sell_the_Coin():
 
 
 def Get_Order():
-  order = int(input("Input Your Order : "))
+  order = input("Input Your Order : ")
   orderList = upbit.get_order(order)
   print(orderList)
 
