@@ -19,6 +19,8 @@ Property_option = 0                               # 어떤 재화로 구매할 �
 Get_Current_price = 0                             # 현재가격 검색
 Number_to_Purchase = 0                            # 몇개를 매수 or 매도 할지
 
+existence_and_nonexistence = False
+pointer = 0
 # 현재 내 코인의 총 구매 가격과 현재가격을 검색하는 process #
 for i in range(1,len(Contents)):                  # 0번째 칸에는 원화가 있으므로 총 금액을 굳이 검색할 필요가 없음 그래서 1,len()으로 설정  
   Purchase_Total += float(Contents[i]['balance']) * float(Contents[i]['avg_buy_price']) # 잔고에 있는 코인의 개수 * 코인의 평균 매수 가격을 토탈 가격에 포함
@@ -47,6 +49,7 @@ def Check_Property():
       df = pyupbit.get_ohlcv("BTC-" + Contents[i]['currency'], interval="minute1", count=1)
       df2 = pyupbit.get_ohlcv("KRW-BTC", interval="minute1", count=1)
       print("Currency : " + Contents[i]['currency'])                            # 무슨 코인인지 출력
+      print("Holdings : " + Contents[i]['balance'] + " " + Contents[i]['currency'])
       print("Purchase Price : " + Contents[i]['avg_buy_price'])                 # 매수 금액 출력
       temp = df['open'][0] * df2['open'][0]
       print("Current Price : " + str(temp))                                     # 가격 출력
@@ -55,6 +58,7 @@ def Check_Property():
     else:
       df = pyupbit.get_ohlcv("KRW-" + Contents[i]['currency'], interval="minute1", count=1)
       print("Currency : " + Contents[i]['currency'])
+      print("Holdings : " + Contents[i]['balance'] + " " + Contents[i]['currency'])
       print("Purchase Price : " + Contents[i]['avg_buy_price'])
       print("Current Price : " + str(df['open'][0]))
       Fluctuation_Rate_of_Coin = (float(df['open'][0]) / float(Contents[i]['avg_buy_price'])) * 100 - 100
@@ -86,9 +90,11 @@ def Buy_the_Coin():
     df = pyupbit.get_ohlcv("KRW-" + Property_option, interval="minute1", count=1) # 원화로 변환
     Get_Current_price *= float(df['open'][0])
   print(str(Get_Current_price) + ' Won\n')
+
   Number_to_Purchase = int(input("number to purchase : "))
   Estimated_amount = Get_Current_price * Number_to_Purchase
   print("Estimated Price : " + str(Estimated_amount) + " Won")
+  print("Holiding KRW : " + Contents[0]['balance'])
   print("Would you like to purchase? [Y/N]")
   option = input()
   if (option == 'Y' or option == 'y'):
@@ -100,6 +106,7 @@ def Buy_the_Coin():
 # ======= #
 
 def Sell_the_Coin():
+  existence_and_nonexistence = False
   print('write in capital letters')
   Search_Coin = input("Please enter the symbol of the coin :")
   Property_option = input("Please enter the symbol of the property :")
@@ -109,19 +116,29 @@ def Sell_the_Coin():
     df = pyupbit.get_ohlcv("KRW-" + Property_option, interval="minute1", count=1)
     Get_Current_price *= float(df['open'][0])
   print(str(Get_Current_price) + ' Won\n')
-  Number_to_Purchase = int(input("number to purchase : "))
-  Estimated_amount = Get_Current_price * Number_to_Purchase
-  print("Estimated Price : " + str(Estimated_amount) + " Won")
-  print("Would you like to Sell? [Y/N]")
-  option = input()
-  if (option == 'Y' or option == 'y'):
-    for i in range(1, len(Contents)):
-      if (Contents[i]['currency'] == Search_Coin):
-        if (Estimated_amount <= Contents[i]['balance']  and Estimated_amount > 5000): # 자산 불러와야함
-         upbit.sell_market_order("KRW-" + Property_option, Estimated_amount)
-  else:
+  for i in range(1,len(Contents)):
+    if (Contents[i]['currency'] == Search_Coin):
+      existence_and_nonexistence = True
+      pointer = i
+      break
+  if (existence_and_nonexistence == True):
+    Number_to_Purchase = int(input("number to sell : "))
+    Estimated_amount = Get_Current_price * Number_to_Purchase
+    print("Estimated Price : " + str(Estimated_amount) + " Won")
+    print("Holdings : " + Contents[pointer]['balance'] + " " + Contents[pointer]['currency'])
+    print("Would you like to Sell? [Y/N]")
+    option = input()
+    if (option == 'Y' or option == 'y'):
+      for i in range(1, len(Contents)):
+        if (Contents[i]['currency'] == Search_Coin):
+          if (Estimated_amount <= Contents[i]['balance']  and Estimated_amount > 5000): # 자산 불러와야함
+            upbit.sell_market_order("KRW-" + Property_option, Estimated_amount)
+    else:
       print("Don't enough money!")
-      print("Returns to the initial screen.")
+      print("Returns to the initial screen.\n")
+  else:
+    print("You Don't Have This Coin!")
+    print("Returns to the initial screen.\n")
 
 
 
