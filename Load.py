@@ -24,12 +24,12 @@ existence_and_nonexistence = False
 pointer = 0
 
 ret = 0
-def Property_Load():
-# 현재 내 코인의 총 구매 가격과 현재가격을 검색하는 process #
+
+# 현재 내 코인의 총 구매 가격과 현재가격을 검색하는 process # 
+def Print_Preset():
   Contents = upbit.get_balances()                   # 내 자산 불러오기
   Purchase_Total = float(Contents[0]['balance'])    # 코인 구매가
   Current_Total = float(Contents[0]['balance'])     # 코인 현재가
-
   for i in range(1,len(Contents)):                  # 0번째 칸에는 원화가 있으므로 총 금액을 굳이 검색할 필요가 없음 그래서 1,len()으로 설정  
     Purchase_Total += float(Contents[i]['balance']) * float(Contents[i]['avg_buy_price']) # 잔고에 있는 코인의 개수 * 코인의 평균 매수 가격을 토탈 가격에 포함
     if (Contents[i]['currency'] != 'CHR'):  # 만약 코인이 크로미아가 아니라면  # 크로미아는 BTC심볼로만 구매 가능하다.
@@ -38,15 +38,21 @@ def Property_Load():
     else:                                   # 만약 코인이 크로미아라면
       df = pyupbit.get_ohlcv("BTC-" + Contents[i]['currency'], interval="minute1", count=1) # BTC로 코인 현재가를 검색
       df2= pyupbit.get_ohlcv("KRW-BTC",interval="minute1",count =1)                         # 원화로 변환하기 위해 BTC 가격도 검색
-      print(float(df['open'][0])) # 잔고 출력 
-      
       Current_Total += float(Contents[i]['balance']) * float(df['open'][0]) * float(df2['open'][0]) # 원화로 변환한 가격을 코인 현재가에 덧셈
-      print(float(df['open'][0]) * float(df2['open'][0])) # 잔고 출력
   #=======================================================#
-
   Purchase_Property = format(round(Purchase_Total),',')           # 3자리 수마다 ,를 찍고 소숫점 아래 전부 버림
   Current_Property = format(round(Current_Total),',')             # 동일
   Fluctuation_Rate = (Current_Total / Purchase_Total) * 100 - 100 # Fluctuation_Rate = 수익률
+  print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
+  print("Hello! Lee! What can I do for you?\n\n")
+  print("purchase price of all coins : " + str(Purchase_Property) + " Won")
+  print("current price of all coins : "+ str(Current_Property) + ' Won')
+  print("\n\n")
+  print("fluctuation rate : " + str(round(Fluctuation_Rate)) +'%')
+  print("[1] Check Property")
+  print("[2] Buy")
+  print("[3] Sell")
+  print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
  
 
 # 코인 하나하나의 자산 체크 함수 # 
@@ -151,21 +157,9 @@ def Sell_the_Coin():
 
 
 
-def Print_Preset():
-  print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-  print("Hello! Lee! What can I do for you?\n\n")
-  print("purchase price of all coins : " + str(Purchase_Property) + " Won")
-  print("current price of all coins : "+ str(Current_Property) + ' Won')
-  print("\n\n")
-  print("fluctuation rate : " + str(round(Fluctuation_Rate)) +'%')
-  print("[1] Check Property")
-  print("[2] Buy")
-  print("[3] Sell")
-  print("■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■")
-  
+
 
 while(True):
-  Property_Load()
   Print_Preset()
   Choice = int(input("Input Your Choice! : "))
   if (Choice == 1):
