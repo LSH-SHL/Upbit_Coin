@@ -80,7 +80,7 @@ def get_current_price(ticker):
 #============#
 
 # 코인 매수 #
-def Buy_the_Coin():
+def Buy_the_Coin(): # 구매 매커니즘 수정 요함
   print('write in capital letters') # 오류 방지를 위한 대문자 기입 메세지
   Search_Coin = input("Please enter the symbol of the coin :") # 찾으려는 코인을 KRW와 같은 심볼로 입력 
   Property_option = input("Please enter the symbol of the property :") # 해당 코인을 구매할 재화의 심볼을 입력
@@ -99,7 +99,7 @@ def Buy_the_Coin():
   option = input()
   if (option == 'Y' or option == 'y'):
     if (Estimated_amount <= float(Contents[0]['balance']) and Estimated_amount > 5000):
-         upbit.buy_market_order("KRW-" + Property_option, Estimated_amount)
+         upbit.buy_market_order(Property_option + "-" + Search_Coin, Estimated_amount)
     else:
       print("Don't enough money!")
       print("Returns to the initial screen.")
@@ -131,8 +131,8 @@ def Sell_the_Coin():
     if (option == 'Y' or option == 'y'):
       for i in range(1, len(Contents)):
         if (Contents[i]['currency'] == Search_Coin):
-          if (Estimated_amount <= float(Contents[i]['balance'])  and Estimated_amount > 5000): # 자산 불러와야함
-            upbit.sell_market_order("KRW-" + Property_option, Estimated_amount)
+          if (Number_to_Purchase <= float(Contents[i]['balance'])  and Estimated_amount > 5000): # 자산 불러와야함
+            upbit.sell_market_order(Property_option + "-" + Search_Coin, Number_to_Purchase)
     else:
       print("Don't enough money!")
       print("Returns to the initial screen.\n")
