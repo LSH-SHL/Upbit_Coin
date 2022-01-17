@@ -164,7 +164,7 @@ def Sell_the_Coin():
 def Get_Order():
   order = input("Input Your Order : ")
   print(order)
-  print(upbit.get_order("BTC-CHR"))
+  print(upbit.get_order("BTC-CHR",state="done"))
   orderList = upbit.get_order(order)
   logging.info(orderList)
 
