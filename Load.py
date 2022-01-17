@@ -1,6 +1,7 @@
 import pyupbit
+import logging
 #-*- coding: utf-8 -*-
-
+#826e5857-004c-47e8-a6f2-815328c7c57c
 access = "fUxuI4HySxFEnpNklcUm3KE8raUq7WWxgZScqupF" 
 secret = "fy5TwwHtTA2GhLN46OKXyHfCsRBV8B2dsleHPZrf"
 upbit = pyupbit.Upbit(access, secret)             # 업비트 로그인
@@ -24,7 +25,7 @@ existence_and_nonexistence = False
 pointer = 0
 
 ret = 0
-
+Sum = 0
 # 현재 내 코인의 총 구매 가격과 현재가격을 검색하는 process # 
 def Print_Preset():
   Contents = upbit.get_balances()                   # 내 자산 불러오기
@@ -147,6 +148,9 @@ def Sell_the_Coin():
       for i in range(1, len(Contents)):
         if (Contents[i]['currency'] == Search_Coin):
           if (Number_to_Purchase <= float(Contents[i]['balance'])  and Estimated_amount > 5000): # 자산 불러와야함
+            print(Contents[i]['currency'])
+            Sum = (Property_option + "-" + Search_Coin)
+            print(Sum)
             ret = upbit.sell_market_order(Property_option + "-" + Search_Coin, Number_to_Purchase)
             print(ret)
     else:
@@ -159,8 +163,10 @@ def Sell_the_Coin():
 
 def Get_Order():
   order = input("Input Your Order : ")
+  print(order)
+  print(upbit.get_order("BTC-CHR"))
   orderList = upbit.get_order(order)
-  print(orderList)
+  logging.info(orderList)
 
 
 while(True):
