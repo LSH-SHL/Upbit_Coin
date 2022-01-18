@@ -107,22 +107,21 @@ def Buy_the_Coin(): # 구매 매커니즘 수정 요함
     Get_Current_price *= float(df['open'][0])
   print(str(Get_Current_price) + ' Won\n')
   Number_to_Purchase = int(input("number to purchase : "))
-  price = int(input("Buy price : "))
-  Estimated_amount = price * Number_to_Purchase
+  Estimated_amount = Get_Current_price * Number_to_Purchase
   print("Estimated Price : " + str(Estimated_amount) + " Won")
   print("Holiding KRW : " + Contents[0]['balance'])
   print("Would you like to purchase? [Y/N]")
   option = input()
   if (option == 'Y' or option == 'y'):
     if (Estimated_amount <= float(Contents[0]['balance']) and Estimated_amount > 5000):
-        ret = upbit.buy_limit_order(Property_option + "-" + Search_Coin,price,Number_to_Purchase)
+        ret = upbit.buy_market_order(Property_option + "-" + Search_Coin,Number_to_Purchase)
         print(ret)
     else:
       print("Don't enough money!")
       print("Returns to the initial screen.")
 # ======= #
 
-def Sell_the_Coin():
+def Sell_the_Coin(): # BTC 마켓 수정
   existence_and_nonexistence = False
   print('write in capital letters')
   Search_Coin = input("Please enter the symbol of the coin :")
@@ -140,8 +139,7 @@ def Sell_the_Coin():
       break
   if (existence_and_nonexistence == True):
     Number_to_Purchase = int(input("number to sell : "))
-    price = float(input("Sell price : "))
-    Estimated_amount = price * Number_to_Purchase
+    Estimated_amount = Get_Current_price * Number_to_Purchase
     print("Estimated Price : " + str(Estimated_amount) + " Won")
     print("Holdings : " + Contents[pointer]['balance'] + " " + Contents[pointer]['currency'])
     print("Would you like to Sell? [Y/N]")
@@ -153,7 +151,7 @@ def Sell_the_Coin():
             print(Contents[i]['currency'])
             Sum = (Property_option + "-" + Search_Coin)
             print(Sum)
-            ret = upbit.sell_limit_order(Property_option + "-" + Search_Coin, price ,Number_to_Purchase)
+            ret = upbit.sell_market_order(Property_option + "-" + Search_Coin ,Number_to_Purchase)
             print(ret)
     else:
       print("Don't enough money!")
