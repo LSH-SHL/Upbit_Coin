@@ -140,7 +140,7 @@ def Sell_the_Coin():
       break
   if (existence_and_nonexistence == True):
     Number_to_Purchase = int(input("number to sell : "))
-    price = int(input("Sell price : "))
+    price = float(input("Sell price : "))
     Estimated_amount = price * Number_to_Purchase
     print("Estimated Price : " + str(Estimated_amount) + " Won")
     print("Holdings : " + Contents[pointer]['balance'] + " " + Contents[pointer]['currency'])
